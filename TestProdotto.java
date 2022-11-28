@@ -10,8 +10,44 @@ public class TestProdotto {
         return -1;
     }
 
-    public static boolean contieneSeq(){
+    public static boolean contieneSeq(String codice){
+        String seq = "000";
+        if(codice.indexOf(seq) < 0){
+            return false;
+        }
+
         return true;
+    }
+
+    public static Prodotto[] ordina(Prodotto[] prodotti, int index){
+        boolean ordinato;
+        Prodotto temp;
+
+        do{
+            ordinato = true;
+            for(int i = index - 1; i > 0; i--){
+                if(prodotti[i].getCodice().compareTo(prodotti[i - 1].getCodice()) < 0){
+                    temp = prodotti[i - 1];
+                    prodotti[i - 1] = prodotti[i];
+                    prodotti[i] = temp;
+                    ordinato = false;
+                }
+            }
+
+            if(!ordinato){
+                ordinato = true;
+                for(int i = 0; i < index - 1; i++){
+                    if(prodotti[i].getCodice().compareTo(prodotti[i + 1].getCodice()) > 0){
+                        temp = prodotti[i + 1];
+                        prodotti[i + 1] = prodotti[i];
+                        prodotti[i] = temp;
+                        ordinato = false;
+                    }
+                }
+            }
+        }while(!ordinato);
+
+        return prodotti;
     }
     
     public static void main(String arg[]){
@@ -23,7 +59,7 @@ public class TestProdotto {
         do{
             System.out.println("0. esci");
             System.out.println("1. inserisci prodotto");
-            System.out.println("2.visualizza prodotti");
+            System.out.println("2. visualizza prodotti");
             System.out.println("3. verifica scadenza prodotto in input");
             System.out.println("4. conta gli zeri nei codici a barre");
             System.out.println("5. Ordina i prodotti con ShakeSort");
@@ -85,13 +121,20 @@ public class TestProdotto {
                     if(index > 0){
                         for(int i = 0; i < index; i++){
                             if(contieneSeq(prodotti[i].getCodice())){
-                                System.out.println("Il prodotto con codice " + prodotti[i].getCodice() + "contiene la sequenza 000");
+                                System.out.println("Il prodotto con codice " + prodotti[i].getCodice() + " contiene la sequenza 000");
                             }else{
-                                System.out.println("Il prodotto con codice " + prodotti[i].getCodice() + "non contiene la sequenza 000");
+                                System.out.println("Il prodotto con codice " + prodotti[i].getCodice() + " non contiene la sequenza 000");
                             }
                         }
                     }else{
                         System.out.println("Array vuoto");
+                    }
+                    break;
+                case 5:
+                    if(index < 1){
+                        System.out.println("Array vuoto");
+                    }else{
+                        prodotti = ordina(prodotti, index);
                     }
                     break;
                 default:
